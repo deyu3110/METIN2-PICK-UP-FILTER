@@ -43,13 +43,11 @@ bool CPythonSystem::CheckPickUpFilter(BYTE flag) const
 ///Add
 #if defined(__BL_PICK_FILTER__)
 		else if (!strncmp(command, "PICK_UP_", 8) && !stricmp(value, "0")) {
-			for (BYTE i = 0; i < PICKUP_FILTER_MAX; i++) {
-				std::string PickUpText = "PICK_UP_" + std::to_string(i);
-				if (!PickUpText.compare(command)) {
-					SetPickUpFilter(GetPickUpFilterID(i));
-					break;
-				}
+			auto pickid = std::string(1, command[strlen(command) - 1]);
+			try {
+				SetPickUpFilter(GetPickUpFilterID(std::stoi(pickid)));
 			}
+			catch(...) {}
 		}
 #endif
 
