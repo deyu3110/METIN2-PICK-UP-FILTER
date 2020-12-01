@@ -20,7 +20,7 @@ BYTE CPythonSystem::GetPickUpFilterID(BYTE flag) const
 void CPythonSystem::SetPickUpFilter(BYTE flag)
 {
 	if (flag >= 0 && flag < PICKUP_FILTER_MAX)
-		bsPickUpFilter[flag] = !bsPickUpFilter[flag];
+		bsPickUpFilter.flip(flag);
 }
 
 bool CPythonSystem::CheckPickUpFilter(BYTE flag) const
