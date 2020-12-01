@@ -4,35 +4,28 @@ BYTE CPythonSystem::GetPickUpFilterID(BYTE flag) const
 {
 	switch (flag)
 	{
-		case 0: return CItemData::ITEM_TYPE_WEAPON;
-		case 1: return CItemData::ITEM_TYPE_ARMOR;
-		case 2: return CItemData::ITEM_TYPE_METIN;
-		case 3: return CItemData::ITEM_TYPE_ELK;
-		case 4: return CItemData::ITEM_TYPE_SKILLBOOK;
-		case 5: return CItemData::ITEM_TYPE_BELT;
-		case 6: return CItemData::ITEM_TYPE_HAIR;
-		case 7: return CItemData::ITEM_TYPE_COSTUME;
-		case 8: return CItemData::ITEM_TYPE_BLEND;
+		case CItemData::ITEM_TYPE_WEAPON: return 0;
+		case CItemData::ITEM_TYPE_ARMOR: return 1;
+		case CItemData::ITEM_TYPE_METIN: return 2;
+		case CItemData::ITEM_TYPE_ELK: return 3;
+		case CItemData::ITEM_TYPE_SKILLBOOK: return 4;
+		case CItemData::ITEM_TYPE_BELT: return 5;
+		case CItemData::ITEM_TYPE_HAIR: return 6;
+		case CItemData::ITEM_TYPE_COSTUME: return 7;
+		case CItemData::ITEM_TYPE_BLEND: return 8;
 	}
 	return -1;
 }
 
 void CPythonSystem::SetPickUpFilter(BYTE flag)
 {
-	if (flag == -1)
-		return;
-
-	auto it = std::find(usPickUpFilter.begin(), usPickUpFilter.end(), flag);
-	
-	if (it == usPickUpFilter.end())
-		usPickUpFilter.emplace(flag);
-	else
-		usPickUpFilter.erase(it);
+	if (flag >= 0 && flag < PICKUP_FILTER_MAX)
+		bsPickUpFilter[flag] = !bsPickUpFilter[flag];
 }
 
 bool CPythonSystem::CheckPickUpFilter(BYTE flag) const
 {
-	return std::find(usPickUpFilter.begin(), usPickUpFilter.end(), flag) == usPickUpFilter.end();
+	return (flag >= 0 && flag < PICKUP_FILTER_MAX) ? bsPickUpFilter[flag] : false;
 }
 #endif
 
@@ -42,10 +35,10 @@ bool CPythonSystem::CheckPickUpFilter(BYTE flag) const
 			
 ///Add
 #if defined(__BL_PICK_FILTER__)
-		else if (!strncmp(command, "PICK_UP_", 8) && !stricmp(value, "0")) {
+		else if (!strncmp(command, "PICK_UP_", 8) && !stricmp(value, "1")) {
 			auto pickid = std::string(1, command[strlen(command) - 1]);
 			try {
-				SetPickUpFilter(GetPickUpFilterID(std::stoi(pickid)));
+				SetPickUpFilter(std::stoi(pickid));
 			}
 			catch(...) {}
 		}
@@ -57,7 +50,7 @@ bool CPythonSystem::CheckPickUpFilter(BYTE flag) const
 ///Add
 #if defined(__BL_PICK_FILTER__)
 	for (BYTE i = 0; i < PICKUP_FILTER_MAX; i++) {
-		std::string PickUpText("PICK_UP_" + std::to_string(i) + "\t\t" + std::to_string(CheckPickUpFilter(GetPickUpFilterID(i))) + "\n");
+		std::string PickUpText("PICK_UP_" + std::to_string(i) + "\t\t" + std::to_string(CheckPickUpFilter(i)) + "\n");
 		fprintf(fp, PickUpText.c_str());
 	}
 #endif

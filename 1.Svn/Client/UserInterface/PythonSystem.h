@@ -1,6 +1,6 @@
 ///Add
 #if defined(__BL_PICK_FILTER__)
-#include <unordered_set>
+#include <bitset>
 #endif
 
 //Find
@@ -26,5 +26,5 @@
 	
 ///Add
 #if defined(__BL_PICK_FILTER__)
-		std::unordered_set<BYTE>		usPickUpFilter;
+		std::bitset<PICKUP_FILTER_MAX>	bsPickUpFilter;
 #endif

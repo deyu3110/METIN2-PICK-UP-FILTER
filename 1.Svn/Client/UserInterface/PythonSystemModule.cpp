@@ -6,7 +6,7 @@ PyObject* systemGetPickUpFilter(PyObject* poSelf, PyObject* poArgs)
 	if (!PyTuple_GetInteger(poArgs, 0, &iFlag))
 		return Py_BuildException();
 
-	return Py_BuildValue("i", CPythonSystem::Instance().CheckPickUpFilter(CPythonSystem::Instance().GetPickUpFilterID(iFlag)));
+	return Py_BuildValue("i", !CPythonSystem::Instance().CheckPickUpFilter(iFlag));
 }
 PyObject* systemSetPickUpFilter(PyObject* poSelf, PyObject* poArgs)
 {
@@ -14,7 +14,7 @@ PyObject* systemSetPickUpFilter(PyObject* poSelf, PyObject* poArgs)
 	if (!PyTuple_GetInteger(poArgs, 0, &iFlag))
 		return Py_BuildException();
 
-	CPythonSystem::Instance().SetPickUpFilter(CPythonSystem::Instance().GetPickUpFilterID(iFlag));
+	CPythonSystem::Instance().SetPickUpFilter(iFlag);
 	return Py_BuildNone();
 }
 #endif
