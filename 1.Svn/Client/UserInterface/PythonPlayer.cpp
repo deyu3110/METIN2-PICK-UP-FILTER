@@ -18,6 +18,6 @@
 			Tracenf("CPythonPlayer::SendClickItemPacket(dwIID=%d) : Non-exist item.", dwIID);
 			return;
 		}
-		if (!CPythonSystem::Instance().CheckPickUpFilter(pItemData->GetType()))
+		if (CPythonSystem::Instance().CheckPickUpFilter(CPythonSystem::Instance().GetPickUpFilterID(pItemData->GetType())))
 			return;
 #endif
